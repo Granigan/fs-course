@@ -1,5 +1,5 @@
 ## Code for Web Sequence Diagrams
-Used at [https://www.websequencediagrams.com/](WebSequenceDiagram.com).
+Used at [WebSequenceDiagram.com](https://www.websequencediagrams.com/).
 
 ### 0.4 Saving a note to /notes
 
