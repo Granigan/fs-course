@@ -1,74 +1,74 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
-const Header = (props) => {
+const Header = props => {
   return (
     <div>
-      <h1>
-        {props.course}
-      </h1>
+      <h1>{props.course}</h1>
     </div>
-  )
-}
+  );
+};
 
-const Content = (props) => {
+const Content = props => {
   return (
     <div>
-      <Part part = {props.parts[0]} />
-      <Part part = {props.parts[1]} />
-      <Part part = {props.parts[2]} />
-      </div>
-  )
-}
+      <Part part={props.parts[0]} />
+      <Part part={props.parts[1]} />
+      <Part part={props.parts[2]} />
+    </div>
+  );
+};
 
-const Total = (props) => {
+const Total = props => {
   return (
     <div>
       <p>
-      Yhteensä {props.parts[0].exercises + props.parts[1].exercises
-        + props.parts[0].exercises} tehtävää.
+        Yhteensä{" "}
+        {props.parts[0].exercises +
+          props.parts[1].exercises +
+          props.parts[0].exercises}{" "}
+        tehtävää.
       </p>
     </div>
-  )
-}
+  );
+};
 
-const Part = (props) => {
+const Part = props => {
   return (
     <div>
       <p>
         {props.part.name} {props.part.exercises}
       </p>
     </div>
-  )
-}
+  );
+};
 
 const App = () => {
   const course = {
-    name: 'Half Stack -sovelluskehitys',
+    name: "Half Stack -sovelluskehitys",
     parts: [
       {
-        name: 'Reactin perusteet',
+        name: "Reactin perusteet",
         exercises: 10
       },
       {
-        name: 'Tiedonvälitys propseilla',
+        name: "Tiedonvälitys propseilla",
         exercises: 7
       },
       {
-        name: 'Komponenttien tila',
+        name: "Komponenttien tila",
         exercises: 14
       }
     ]
-  }
-  
+  };
+
   return (
     <div>
       <Header course={course.name} />
-      <Content parts = {course.parts} />
-      <Total parts = {course.parts} />
+      <Content parts={course.parts} />
+      <Total parts={course.parts} />
     </div>
-    
-  )
-}
+  );
+};
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));
