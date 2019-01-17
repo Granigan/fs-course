@@ -11,19 +11,34 @@ const Statistics = props => {
   }
   return (
     <div>
-      <p>
-        Hyvä: {props.good}
-        <br />
-        Neutraali: {props.neutral}
-        <br />
-        Huono: {props.bad}
-        <br />
-        Yhteensä: {props.total}
-        <br />
-        Keskiarvo: {((props.good - props.bad) / props.total).toFixed(2)}
-        <br />
-        Positiivisia: {((props.good / props.total) * 100).toFixed(2)} %<br />
-      </p>
+      <table>
+        <tbody>
+          <tr>
+            <td>Hyvä:</td>
+            <td>{props.good}</td>
+          </tr>
+          <tr>
+            <td>Neutraali:</td>
+            <td>{props.neutral}</td>
+          </tr>
+          <tr>
+            <td>Huono:</td>
+            <td>{props.bad}</td>
+          </tr>
+          <tr>
+            <td>Yhteensä:</td>
+            <td>{props.total}</td>
+          </tr>
+          <tr>
+            <td>Keskiarvo:</td>
+            <td>{((props.good - props.bad) / props.total).toFixed(2)}</td>
+          </tr>
+          <tr>
+            <td>Positiivisia:</td>
+            <td>{((props.good / props.total) * 100).toFixed(2)} %</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 };
