@@ -9,6 +9,7 @@ const App = () => {
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
+  const total = good + neutral + bad;
 
   return (
     <div>
@@ -20,9 +21,13 @@ const App = () => {
       </div>
       <h1>Tilastot</h1>
       <div>
-        <p>Hyvä: {good}</p>
-        <p>Neutraali: {neutral}</p>
-        <p>Huono: {bad}</p>
+        <p>Hyvä: {good}<br />
+        Neutraali: {neutral}<br />
+        Huono: {bad}<br />
+        Yhteensä: {total}<br/>
+        Keskiarvo: {((good - bad)/total).toFixed(2)}<br />
+        Positiivisia: {(good/total*100).toFixed(2)} %<br />
+        </p>
       </div>
     </div>
   );
