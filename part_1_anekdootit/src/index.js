@@ -19,10 +19,25 @@ const App = () => {
 
   return (
     <div>
-      <h3>{anecdotes[selected]}</h3>
+      <h2>Anecdote of the day</h2>
+      <p>
+        <i>{anecdotes[selected]}</i>
+      </p>
       <p>This anecdote has {votes[selected]} votes.</p>
       <Button handleClick={voteCurrent} text={"Vote!"} />
       <Button handleClick={setSelected} text={"Another anecdote!"} />
+      <h2>Top anecdote</h2>
+      <p>
+        <i>
+          {
+            anecdotes[
+              votes.reduce((iMax, x, i, arr) => (x > arr[iMax] ? i : iMax), 0)
+            ]
+          }
+        </i>
+        <br />
+        With {Math.max.apply(null, votes)} votes.
+      </p>
     </div>
   );
 };
