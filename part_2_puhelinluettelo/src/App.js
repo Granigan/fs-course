@@ -1,28 +1,28 @@
 import React, { useState } from "react";
-
-const Details = ({ persons }) => (
-  <div>
-    {persons.map(person => (
-      <Detail key={person.name} name={person.name} />
-    ))}
-  </div>
-);
-
-const Detail = ({ name }) => (
-  <div>
-    {name}
-  </div>);
+import Details from "./component/Details";
 
 const App = () => {
   const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
   const [newName, setNewName] = useState("");
 
+  const handleNameChange = event => {
+    setNewName(event.target.value);
+  };
+
+  const addPerson = event => {
+    event.preventDefault();
+    const personObject = {
+      name: event.target.name
+    };
+    setPersons(persons.concat(personObject));
+  };
+
   return (
     <div>
       <h2>Puhelinluettelo</h2>
-      <form>
+      <form onSubmit={addPerson} name={newName}>
         <div>
-          nimi: <input />
+          nimi: <input value={newName} onChange={handleNameChange} />
         </div>
         <div>
           <button type="submit">lisää</button>
