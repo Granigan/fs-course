@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Details from "./component/Details";
+import Title from "./component/Title";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -42,9 +43,10 @@ const App = () => {
     }
   };
 
+
   return (
     <div>
-      <h2>Puhelinluettelo</h2>
+      <Title name="Puhelinluettelo" />
       <p>
         Hae nimiä: <input value={newFilter} onChange={handleFilterChange} />
       </p>
