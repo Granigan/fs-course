@@ -20,7 +20,7 @@ const App = () => {
     setNewFilter(event.target.value);
     setNewFilteredList(
       persons.filter(person =>
-        person.name.toUpperCase().includes(newFilter.toUpperCase())
+        person.name.toUpperCase().includes(event.target.value.toUpperCase())
       )
     );
   };
