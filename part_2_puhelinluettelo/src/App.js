@@ -17,12 +17,12 @@ const App = () => {
   const handleNumberChange = event => setNewNumber(event.target.value);
 
   const handleFilterChange = event => {
+    setNewFilter(event.target.value);
     setNewFilteredList(
       persons.filter(person =>
         person.name.toUpperCase().includes(newFilter.toUpperCase())
       )
     );
-    setNewFilter(event.target.value);
   };
 
   const addPerson = event => {
