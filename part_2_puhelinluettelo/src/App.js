@@ -11,10 +11,16 @@ const App = () => {
 
   const addPerson = event => {
     event.preventDefault();
-    const personObject = {
-      name: event.target.name
-    };
-    setPersons(persons.concat(personObject));
+    const name = newName;
+    if (persons.map(person => person.name).includes(name)) {
+      window.alert(`${name} on jo luettelossa.`);
+    } else {
+      const personObject = {
+        name: name
+      };
+      setPersons(persons.concat(personObject));
+      setNewName("");
+    }
   };
 
   return (
