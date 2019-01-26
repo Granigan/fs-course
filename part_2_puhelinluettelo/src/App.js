@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import Details from "./component/Details";
 import Title from "./component/Title";
+import Filter from "./component/Filter";
+import PersonForm from "./component/PersonForm";
+import Header from "./component/Header";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -43,26 +46,19 @@ const App = () => {
     }
   };
 
-
   return (
     <div>
       <Title name="Puhelinluettelo" />
-      <p>
-        Hae nimiä: <input value={newFilter} onChange={handleFilterChange} />
-      </p>
-      <h3>Lisää uusi nimi luetteloon</h3>
-      <form onSubmit={addPerson} name={newName}>
-        <div>
-          nimi: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          numero: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">lisää</button>
-        </div>
-      </form>
-      <h2>Numerot</h2>
+      <Filter newFilter={newFilter} handleFilterChange={handleFilterChange} />
+      <Header name="Lisää uusi nimi luetteloon" />
+      <PersonForm
+        addPerson={addPerson}
+        newName={newName}
+        newNumber={newNumber}
+        handleNameChange={handleNameChange}
+        handleNumberChange={handleNumberChange}
+      />
+      <Header name="Numerot" />
       <Details persons={filteredList} />
     </div>
   );
