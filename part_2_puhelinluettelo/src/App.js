@@ -40,9 +40,12 @@ const App = () => {
         name: name,
         number: number
       };
-      setPersons(persons.concat(personObject));
+      const newPersons = persons.concat(personObject);
+      setPersons(newPersons);
       setNewName("");
       setNewNumber("");
+      setNewFilter("");
+      setNewFilteredList(newPersons);
     }
   };
 
