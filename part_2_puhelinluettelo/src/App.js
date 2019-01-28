@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Details from "./component/Details";
 import Title from "./component/Title";
 import Filter from "./component/Filter";
@@ -6,16 +7,18 @@ import PersonForm from "./component/PersonForm";
 import Header from "./component/Header";
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "040-123456" },
-    { name: "Martti Tienari", number: "040-123456" },
-    { name: "Arto Järvinen", number: "040-123456" },
-    { name: "Lea Kutvonen", number: "040-123456" }
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
   const [filteredList, setNewFilteredList] = useState(persons);
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/db").then(response => {
+      setPersons(response.data.persons);
+      setNewFilteredList(response.data.persons);
+    });
+  }, []);
 
   const handleNameChange = event => setNewName(event.target.value);
   const handleNumberChange = event => setNewNumber(event.target.value);
