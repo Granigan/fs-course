@@ -12,7 +12,6 @@ const App = () => {
     axios.get("https://restcountries.eu/rest/v2/all").then(response => {
       setCountries(response.data);
       setNewFilteredCountries(response.data);
-      console.log(response.data);
     });
   }, []);
 
@@ -28,7 +27,11 @@ const App = () => {
   return (
     <div>
       <Filter newFilter={newFilter} handleFilterChange={handleFilterChange} />
-      <Display countries={filteredCountries} />
+      <Display
+        countries={filteredCountries}
+        setNewFilter={setNewFilter}
+        setNewFilteredCountries={setNewFilteredCountries}
+      />
     </div>
   );
 };

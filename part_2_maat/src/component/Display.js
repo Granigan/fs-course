@@ -1,7 +1,8 @@
 import React from "react";
 import Country from "./Country";
+import CountryList from "./CountryList";
 
-const Display = ({ countries }) => {
+const Display = ({ countries, setNewFilter, setNewFilteredCountries }) => {
   const amountOfCountries = countries.length;
   if (amountOfCountries > 10) {
     return <div>Too many countries, please refine your search.</div>;
@@ -10,13 +11,7 @@ const Display = ({ countries }) => {
   } else if (amountOfCountries === 1) {
     return <Country country={countries[0]} />;
   } else {
-    return (
-      <div>
-        {countries.map(country => (
-          <div key={country.numericCode}>{country.name}</div>
-        ))}
-      </div>
-    );
+    return <CountryList countries={countries} setNewFilter={setNewFilter} setNewFilteredCountries={setNewFilteredCountries} />;
   }
 };
 
