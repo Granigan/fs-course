@@ -53,9 +53,10 @@ const App = () => {
 
   const removePerson = ({ id, name }) => {
     if (window.confirm(`Are you sure you want to remove details for ${name}`)) {
-      personService.remove(id).then(response => {
-        console.log(response);
+      personService.remove(id).catch(error => {
+        alert(`Käyttäjä ${name} on jo poistettu tietokannasta.`);
       });
+      setNewFilteredList(filteredList.filter(person => person.id !== id));
     }
   };
 
