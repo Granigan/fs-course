@@ -51,6 +51,14 @@ const App = () => {
     }
   };
 
+  const removePerson = ({ id, name }) => {
+    if (window.confirm(`Are you sure you want to remove details for ${name}`)) {
+      personService.remove(id).then(response => {
+        console.log(response);
+      });
+    }
+  };
+
   return (
     <div>
       <Title name="Puhelinluettelo" />
@@ -64,7 +72,7 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <Header name="Numerot" />
-      <Details persons={filteredList} />
+      <Details persons={filteredList} removePerson={removePerson} />
     </div>
   );
 };
