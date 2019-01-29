@@ -42,14 +42,14 @@ const App = () => {
       const personObject = {
         name: name,
         number: number,
-        id: persons.length +1
       };
-      const newPersons = persons.concat(personObject);
-      setPersons(newPersons);
+      axios
+      .post("http://localhost:3001/persons", personObject)
+      .then(response => {
+        setNewFilteredList(persons.concat(response.data));
+      });
       setNewName("");
       setNewNumber("");
-      setNewFilter("");
-      setNewFilteredList(newPersons);
     }
   };
 
