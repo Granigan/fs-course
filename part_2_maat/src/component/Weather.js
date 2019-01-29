@@ -24,9 +24,6 @@ const Weather = ({ city }) => {
       });
   }, []);
 
-  console.log(weather.current);
-  console.log(weather);
-
   return (
     <div>
       <h3>Weather in the capital {city}</h3>
