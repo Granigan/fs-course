@@ -36,15 +36,37 @@ const App = () => {
     event.preventDefault();
     const name = newName;
     const number = newNumber;
+
     if (persons.map(person => person.name).includes(name)) {
-      window.alert(`${name} on jo luettelossa.`);
+      if (window.confirm(`${name} on jo luettelossa, korvataanko nykyinen numero uudella?`)) {
+        const id = persons.filter(person => person.name === name)[0].id;
+        const personObject = {
+          id: id,
+          name: name,
+          number: number
+        };
+        personService
+          .update(id, personObject)
+          .then(updatedPerson => {
+            setPersons(persons.map(person => person.id !== id ? person : updatedPerson ));
+            setNewFilteredList(persons.map(person => person.id !== id ? person : updatedPerson ));
+            setNewFilter("");
+          })
+          .catch(error => {
+            alert(`Käyttäjää ${name} ei ole tietokannassa.`);
+          });
+      }
+      setNewName("");
+      setNewNumber("");
     } else {
       const personObject = {
         name: name,
         number: number
       };
       personService.create(personObject).then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson));
         setNewFilteredList(persons.concat(returnedPerson));
+        setNewFilter("");
       });
       setNewName("");
       setNewNumber("");
@@ -57,6 +79,7 @@ const App = () => {
         alert(`Käyttäjä ${name} on jo poistettu tietokannasta.`);
       });
       setNewFilteredList(filteredList.filter(person => person.id !== id));
+      setPersons(persons.filter(person => person.id !== id));
     }
   };
 
