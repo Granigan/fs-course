@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Details from "./component/Details";
 import Title from "./component/Title";
 import Filter from "./component/Filter";
 import PersonForm from "./component/PersonForm";
 import Header from "./component/Header";
+import personService from "./services/persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -14,9 +14,9 @@ const App = () => {
   const [filteredList, setNewFilteredList] = useState(persons);
 
   useEffect(() => {
-    axios.get("http://localhost:3001/db").then(response => {
-      setPersons(response.data.persons);
-      setNewFilteredList(response.data.persons);
+    personService.getAll().then(initialPersons => {
+      setPersons(initialPersons);
+      setNewFilteredList(initialPersons);
     });
   }, []);
 
@@ -41,12 +41,10 @@ const App = () => {
     } else {
       const personObject = {
         name: name,
-        number: number,
+        number: number
       };
-      axios
-      .post("http://localhost:3001/persons", personObject)
-      .then(response => {
-        setNewFilteredList(persons.concat(response.data));
+      personService.create(personObject).then(returnedPerson => {
+        setNewFilteredList(persons.concat(returnedPerson));
       });
       setNewName("");
       setNewNumber("");
