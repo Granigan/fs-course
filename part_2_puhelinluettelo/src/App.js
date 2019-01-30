@@ -5,6 +5,8 @@ import Filter from "./component/Filter";
 import PersonForm from "./component/PersonForm";
 import Header from "./component/Header";
 import personService from "./services/persons";
+import Notice from "./component/Notice";
+import "./index.css";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -12,6 +14,9 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
   const [filteredList, setNewFilteredList] = useState(persons);
+  const [errorMessage, setNewErrorMessage] = useState(null);
+  const [successMessage, setNewSuccessMessage] = useState(null);
+  const noticeTime = 5000;
 
   useEffect(() => {
     personService.getAll().then(initialPersons => {
@@ -38,7 +43,11 @@ const App = () => {
     const number = newNumber;
 
     if (persons.map(person => person.name).includes(name)) {
-      if (window.confirm(`${name} on jo luettelossa, korvataanko nykyinen numero uudella?`)) {
+      if (
+        window.confirm(
+          `${name} on jo luettelossa, korvataanko nykyinen numero uudella?`
+        )
+      ) {
         const id = persons.filter(person => person.name === name)[0].id;
         const personObject = {
           id: id,
@@ -48,12 +57,23 @@ const App = () => {
         personService
           .update(id, personObject)
           .then(updatedPerson => {
-            setPersons(persons.map(person => person.id !== id ? person : updatedPerson ));
-            setNewFilteredList(persons.map(person => person.id !== id ? person : updatedPerson ));
+            setPersons(
+              persons.map(person => (person.id !== id ? person : updatedPerson))
+            );
+            setNewFilteredList(
+              persons.map(person => (person.id !== id ? person : updatedPerson))
+            );
             setNewFilter("");
+            setNewSuccessMessage(`Käyttäjän ${name} numero on päivitetty.`);
+            setTimeout(() => {
+              setNewSuccessMessage(null);
+            }, noticeTime);
           })
           .catch(error => {
-            alert(`Käyttäjää ${name} ei ole tietokannassa.`);
+            setNewErrorMessage(`Käyttäjää ${name} ei ole tietokannassa.`);
+            setTimeout(() => {
+              setNewErrorMessage(null);
+            }, noticeTime);
           });
       }
       setNewName("");
@@ -70,14 +90,31 @@ const App = () => {
       });
       setNewName("");
       setNewNumber("");
+      setNewSuccessMessage(`Käyttäjä ${name} on lisätty tietokantaan.`);
+      setTimeout(() => {
+        setNewSuccessMessage(null);
+      }, noticeTime);
     }
   };
 
   const removePerson = ({ id, name }) => {
     if (window.confirm(`Are you sure you want to remove details for ${name}`)) {
-      personService.remove(id).catch(error => {
-        alert(`Käyttäjä ${name} on jo poistettu tietokannasta.`);
-      });
+      personService
+        .remove(id)
+        .then(response => {
+          setNewSuccessMessage(`Käyttäjä ${name} poistettiin tietokannasta.`);
+          setTimeout(() => {
+            setNewSuccessMessage(null);
+          }, noticeTime);
+        })
+        .catch(error => {
+          setNewErrorMessage(
+            `Käyttäjä ${name} oli jo poistettu tietokannasta.`
+          );
+          setTimeout(() => {
+            setNewErrorMessage(null);
+          }, noticeTime);
+        });
       setNewFilteredList(filteredList.filter(person => person.id !== id));
       setPersons(persons.filter(person => person.id !== id));
     }
@@ -86,6 +123,8 @@ const App = () => {
   return (
     <div>
       <Title name="Puhelinluettelo" />
+      <Notice message={errorMessage} type="error" />
+      <Notice message={successMessage} type="success" />
       <Filter newFilter={newFilter} handleFilterChange={handleFilterChange} />
       <Header name="Lisää uusi nimi luetteloon" />
       <PersonForm
