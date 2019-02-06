@@ -56,12 +56,12 @@ const App = () => {
         };
         personService
           .update(id, personObject)
-          .then(updatedPerson => {
+          .then(response => {
             setPersons(
-              persons.map(person => (person.id !== id ? person : updatedPerson))
+              persons.map(person => (person.id !== id ? person : response))
             );
             setNewFilteredList(
-              persons.map(person => (person.id !== id ? person : updatedPerson))
+              persons.map(person => (person.id !== id ? person : response))
             );
             setNewFilter("");
             setNewSuccessMessage(`Käyttäjän ${name} numero on päivitetty.`);
