@@ -37,6 +37,18 @@ const App = () => {
     );
   };
 
+  const addNotice = (type, message) => {
+    if (type === "success") {
+      setNewSuccessMessage(message);
+    } else {
+      setNewErrorMessage(message);
+    }
+    setTimeout(() => {
+      setNewSuccessMessage(null);
+      setNewErrorMessage(null);
+    }, noticeTime);
+  };
+
   const addPerson = event => {
     event.preventDefault();
     const name = newName;
@@ -56,24 +68,18 @@ const App = () => {
         };
         personService
           .update(id, personObject)
-          .then(response => {
+          .then(res => {
             setPersons(
-              persons.map(person => (person.id !== id ? person : response))
+              persons.map(person => (person.id !== id ? person : res))
             );
             setNewFilteredList(
-              persons.map(person => (person.id !== id ? person : response))
+              persons.map(person => (person.id !== id ? person : res))
             );
             setNewFilter("");
-            setNewSuccessMessage(`Käyttäjän ${name} numero on päivitetty.`);
-            setTimeout(() => {
-              setNewSuccessMessage(null);
-            }, noticeTime);
+            addNotice("success", `Käyttäjän ${name} numero on päivitetty.`);
           })
           .catch(error => {
-            setNewErrorMessage(`Käyttäjää ${name} ei ole tietokannassa.`);
-            setTimeout(() => {
-              setNewErrorMessage(null);
-            }, noticeTime);
+            addNotice("error", error.response.data.error);
           });
       }
       setNewName("");
@@ -83,17 +89,19 @@ const App = () => {
         name: name,
         number: number
       };
-      personService.create(personObject).then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson));
-        setNewFilteredList(persons.concat(returnedPerson));
-        setNewFilter("");
-      });
+      personService
+        .create(personObject)
+        .then(res => {
+          setPersons(persons.concat(res));
+          setNewFilteredList(persons.concat(res));
+          setNewFilter("");
+          addNotice("success", `Käyttäjä ${name} on lisätty tietokantaan.`);
+        })
+        .catch(error => {
+          addNotice("error", error.response.data.error);
+        });
       setNewName("");
       setNewNumber("");
-      setNewSuccessMessage(`Käyttäjä ${name} on lisätty tietokantaan.`);
-      setTimeout(() => {
-        setNewSuccessMessage(null);
-      }, noticeTime);
     }
   };
 
@@ -101,19 +109,14 @@ const App = () => {
     if (window.confirm(`Are you sure you want to remove details for ${name}`)) {
       personService
         .remove(id)
-        .then(response => {
-          setNewSuccessMessage(`Käyttäjä ${name} poistettiin tietokannasta.`);
-          setTimeout(() => {
-            setNewSuccessMessage(null);
-          }, noticeTime);
+        .then(res => {
+          addNotice("success", `Käyttäjä ${name} poistettiin tietokannasta.`);
         })
         .catch(error => {
-          setNewErrorMessage(
+          addNotice(
+            "error",
             `Käyttäjä ${name} oli jo poistettu tietokannasta.`
           );
-          setTimeout(() => {
-            setNewErrorMessage(null);
-          }, noticeTime);
         });
       setNewFilteredList(filteredList.filter(person => person.id !== id));
       setPersons(persons.filter(person => person.id !== id));
