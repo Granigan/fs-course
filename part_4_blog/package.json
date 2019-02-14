@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "jest --verbose",
+    "start": "MODE_ENV=production node index.js",
+    "test": "MODE_ENV=test jest --verbose",
     "lint": "eslint .",
-    "watch": "nodemon index.js"
+    "watch": "MODE_ENV=development nodemon index.js"
   },
   "author": "",
   "license": "ISC",
