@@ -34,6 +34,29 @@ describe('db is functioning', () => {
   })
 })
 
+describe('POSTing is functioning', () => {
+  test('valid blog can be added', async () => {
+    const newBlog = {
+      title: 'POST-testing for Dummies',
+      author: 'Anon',
+      url: '#',
+      likes: 1
+    }
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/blogs')
+
+    const contents = response.body.map(r => r.title)
+
+    expect(response.body.length).toBe(helper.allBlogs.length + 1)
+    expect(contents).toContain('POST-testing for Dummies')
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
