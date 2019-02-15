@@ -34,7 +34,7 @@ describe('db is functioning', () => {
   })
 })
 
-describe('POSTing is functioning', () => {
+describe('POSTs are validated', () => {
   test('valid blog can be added', async () => {
     const newBlog = {
       title: 'POST-testing for Dummies',
@@ -75,6 +75,31 @@ describe('POSTing is functioning', () => {
     expect(response.body.length).toBe(helper.allBlogs.length + 1)
     expect(newEntry.likes).toBe(0)
   })
+
+  test('blog with no title is denied', async () => {
+    const newBlog = {
+      author: 'Anon',
+      url: '#',
+      likes: 1
+    }
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
+
+  test('blog with no URL is denied', async () => {
+    const newBlog = {
+      title: 'POST-testing for Dummies',
+      author: 'Anon',
+      likes: 1
+    }
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
+
 })
 
 afterAll(() => {
