@@ -8,16 +8,9 @@ const api = supertest(app)
 
 beforeEach(async () => {
   await Blog.remove({})
-  console.log('DB cleared')
-
-  const blogObjects = helper.allBlogs().map(blog => new Blog(blog))
-  console.log(blogObjects)
-
-  const promiseArray = blogObjects.map(blog => blog.save)
-
+  const blogObjects = helper.allBlogs.map(blog => new Blog(blog))
+  const promiseArray = blogObjects.map(blog => blog.save())
   await Promise.all(promiseArray)
-  console.log('Entries saved')
-  console.log('DB initialised')
 })
 
 test('notes are returned as json', async () => {
@@ -27,7 +20,7 @@ test('notes are returned as json', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
-test.only('all 6 blogs are returned', async () => {
+test('all 6 blogs are returned', async () => {
   const response = await api
     .get('/api/blogs')
 
