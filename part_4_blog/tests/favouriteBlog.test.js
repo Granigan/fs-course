@@ -1,5 +1,5 @@
 const listHelper = require('../utils/list_helper')
-const testData = require('./testData')
+const helper = require('./test_helper')
 
 describe('blog with most likes', () => {
   test('when exactly one blog', () => {
@@ -53,6 +53,6 @@ describe('blog with most likes', () => {
       __v: 0
     }
 
-    expect(listHelper.favouriteBlog(testData.allBlogs())).toEqual(favourite)
+    expect(listHelper.favouriteBlog(helper.allBlogs())).toEqual(favourite)
   })
 })

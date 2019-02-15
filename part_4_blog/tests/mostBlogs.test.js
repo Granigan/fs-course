@@ -1,5 +1,5 @@
 const listHelper = require('../utils/list_helper')
-const testData = require('./testData')
+const helper = require('./test_helper')
 
 describe('most productive author', () => {
   test('when exactly one blog', () => {
@@ -20,6 +20,6 @@ describe('most productive author', () => {
   })
 
   test('when all blogs', () => {
-    expect(listHelper.mostBlogs(testData.allBlogs())).toEqual({ author: 'Robert C. Martin', blogs: 3 })
+    expect(listHelper.mostBlogs(helper.allBlogs())).toEqual({ author: 'Robert C. Martin', blogs: 3 })
   })
 })

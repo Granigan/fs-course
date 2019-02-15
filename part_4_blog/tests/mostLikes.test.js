@@ -1,5 +1,5 @@
 const listHelper = require('../utils/list_helper')
-const testData = require('./testData')
+const helper = require('./test_helper')
 
 describe('most liked author', () => {
   test('when exactly one blog', () => {
@@ -20,6 +20,6 @@ describe('most liked author', () => {
   })
 
   test('when all blogs', () => {
-    expect(listHelper.mostLikes(testData.allBlogs())).toEqual({ author: 'Edsger W. Dijkstra', likes: 17 })
+    expect(listHelper.mostLikes(helper.allBlogs())).toEqual({ author: 'Edsger W. Dijkstra', likes: 17 })
   })
 })
