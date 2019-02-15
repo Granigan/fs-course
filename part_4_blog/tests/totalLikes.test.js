@@ -43,6 +43,6 @@ describe('total likes', () => {
   })
 
   test('when all blogs', () => {
-    expect(listHelper.totalLikes(helper.allBlogs())).toBe(36)
+    expect(listHelper.totalLikes(helper.allBlogs)).toBe(36)
   })
 })

@@ -53,6 +53,6 @@ describe('blog with most likes', () => {
       __v: 0
     }
 
-    expect(listHelper.favouriteBlog(helper.allBlogs())).toEqual(favourite)
+    expect(listHelper.favouriteBlog(helper.allBlogs)).toEqual(favourite)
   })
 })

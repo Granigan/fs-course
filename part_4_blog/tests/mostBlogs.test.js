@@ -20,6 +20,6 @@ describe('most productive author', () => {
   })
 
   test('when all blogs', () => {
-    expect(listHelper.mostBlogs(helper.allBlogs())).toEqual({ author: 'Robert C. Martin', blogs: 3 })
+    expect(listHelper.mostBlogs(helper.allBlogs)).toEqual({ author: 'Robert C. Martin', blogs: 3 })
   })
 })

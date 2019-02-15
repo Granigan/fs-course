@@ -20,6 +20,6 @@ describe('most liked author', () => {
   })
 
   test('when all blogs', () => {
-    expect(listHelper.mostLikes(helper.allBlogs())).toEqual({ author: 'Edsger W. Dijkstra', likes: 17 })
+    expect(listHelper.mostLikes(helper.allBlogs)).toEqual({ author: 'Edsger W. Dijkstra', likes: 17 })
   })
 })
