@@ -18,7 +18,7 @@ test('all 6 blogs are returned', async () => {
   expect(response.body.length).toBe(6)
 })
 
-test.only('id key has no underscore', async() => {
+test('id key has no underscore', async() => {
   const response = await api
     .get('/api/blogs')
 
