@@ -13,10 +13,6 @@ const totalLikes = blogs => {
 const favouriteBlog = blogs => {
   if (blogs.length === 0) return { title: 'not available' }
 
-  console.log(_(blogs)
-    .sort((a, b) => b.likes - a.likes)
-    .first())
-
   return _(blogs)
     .sort((a, b) => b.likes - a.likes)
     .first()
