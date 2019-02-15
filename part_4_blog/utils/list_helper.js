@@ -13,7 +13,7 @@ const totalLikes = blogs => {
 const favouriteBlog = blogs => {
   if (blogs.length === 0) return { title: 'not available' }
 
-  return _(blogs)
+  return _([...blogs])
     .sort((a, b) => b.likes - a.likes)
     .first()
 }
@@ -21,7 +21,7 @@ const favouriteBlog = blogs => {
 const mostBlogs = blogs => {
   if (blogs.length === 0) return { author: 'not available', blogs: 0 }
 
-  return _(blogs)
+  return _([...blogs])
     .countBy('author')
     .map((amount, name) => ({ author: name, blogs: amount }))
     .sort((a, b) => b.blogs - a.blogs)
@@ -31,7 +31,7 @@ const mostBlogs = blogs => {
 const mostLikes = blogs => {
   if (blogs.length === 0) return { author: 'not available', likes: 0 }
 
-  return _(blogs)
+  return _([...blogs])
     .groupBy('author')
     .map((blogs, name) => ({
       author: name,
