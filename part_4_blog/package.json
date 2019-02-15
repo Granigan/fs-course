@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "MODE_ENV=production node index.js",
-    "test": "MODE_ENV=test jest --verbose",
+    "start": "cross-env MODE_ENV=production node index.js",
+    "test": "cross-env MODE_ENV=test jest --verbose --runInBand",
     "lint": "eslint .",
-    "watch": "MODE_ENV=development nodemon index.js"
+    "watch": "cross-env MODE_ENV=development nodemon index.js"
   },
   "author": "",
   "license": "ISC",
@@ -19,8 +19,10 @@
     "mongoose": "^5.4.11"
   },
   "devDependencies": {
+    "cross-env": "^5.2.0",
     "jest": "^24.1.0",
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.18.10",
+    "supertest": "^3.4.2"
   },
   "jest": {
     "testEnvironment": "node"
