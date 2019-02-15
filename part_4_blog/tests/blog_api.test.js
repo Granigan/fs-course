@@ -55,6 +55,26 @@ describe('POSTing is functioning', () => {
     expect(response.body.length).toBe(helper.allBlogs.length + 1)
     expect(contents).toContain('POST-testing for Dummies')
   })
+
+  test('set likes to zero when no likes given', async () => {
+    const newBlog = {
+      title: 'POST-testing for Dummies',
+      author: 'Anon',
+      url: '#',
+    }
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/blogs')
+
+    const newEntry = response.body.filter(blog => blog.author === 'Anon')[0]
+
+    expect(response.body.length).toBe(helper.allBlogs.length + 1)
+    expect(newEntry.likes).toBe(0)
+  })
 })
 
 afterAll(() => {
