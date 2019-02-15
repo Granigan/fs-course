@@ -16,7 +16,13 @@ test('all 6 blogs are returned', async () => {
     .get('/api/blogs')
 
   expect(response.body.length).toBe(6)
+})
 
+test.only('id key has no underscore', async() => {
+  const response = await api
+    .get('/api/blogs')
+
+  expect(response.body[0].id).toBeDefined()
 })
 
 afterAll(() => {
