@@ -13,25 +13,25 @@ beforeEach(async () => {
   await Promise.all(promiseArray)
 })
 
-test('notes are returned as json', async () => {
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
-})
+describe('db is functioning', () => {
+  test('notes are returned as json', async () => {
+    await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+  })
 
-test('all 6 blogs are returned', async () => {
-  const response = await api
-    .get('/api/blogs')
+  test('all 6 blogs are returned', async () => {
+    const response = await api.get('/api/blogs')
 
-  expect(response.body.length).toBe(6)
-})
+    expect(response.body.length).toBe(6)
+  })
 
-test('id key has no underscore', async() => {
-  const response = await api
-    .get('/api/blogs')
+  test('id key has no underscore', async () => {
+    const response = await api.get('/api/blogs')
 
-  expect(response.body[0].id).toBeDefined()
+    expect(response.body[0].id).toBeDefined()
+  })
 })
 
 afterAll(() => {
