@@ -13,7 +13,7 @@ beforeEach(async () => {
   await Promise.all(promiseArray)
 })
 
-describe('db is functioning', () => {
+describe('DB is functioning', () => {
   test('notes are returned as json', async () => {
     await api
       .get('/api/blogs')
@@ -99,6 +99,33 @@ describe('POSTs are validated', () => {
       .send(newBlog)
       .expect(400)
   })
+
+})
+
+describe('DELETE is functioning', () => {
+  test('note is removed when id is valid', async () => {
+    const toBeDeleted = await helper.allBlogs[0]
+
+    await api
+      .delete(`/api/blogs/${toBeDeleted._id}`)
+      .expect(204)
+
+    const blogsLeft = await helper.blogsInDb()
+
+    expect(blogsLeft.length).toBe(helper.allBlogs.length-1)
+    expect(blogsLeft).not.toContainEqual(toBeDeleted)
+  })
+
+  test('nothing is removed when id is invalid', async () => {
+    await api
+      .delete('/api/blogs/5a422aa71b54a676234d17f7')
+
+    const blogsLeft = await helper.blogsInDb()
+    expect(blogsLeft.length).toBe(helper.allBlogs.length)
+  })
+})
+
+describe('PUT is functioning', () => {
 
 })
 
