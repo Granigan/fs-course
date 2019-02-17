@@ -60,7 +60,7 @@ describe('POSTs are validated', () => {
     const newBlog = {
       title: 'POST-testing for Dummies',
       author: 'Anon',
-      url: '#',
+      url: '#'
     }
     await api
       .post('/api/blogs')
@@ -99,26 +99,22 @@ describe('POSTs are validated', () => {
       .send(newBlog)
       .expect(400)
   })
-
 })
 
 describe('DELETE is functioning', () => {
   test('note is removed when id is valid', async () => {
     const toBeDeleted = await helper.allBlogs[0]
 
-    await api
-      .delete(`/api/blogs/${toBeDeleted._id}`)
-      .expect(204)
+    await api.delete(`/api/blogs/${toBeDeleted._id}`).expect(204)
 
     const blogsLeft = await helper.blogsInDb()
 
-    expect(blogsLeft.length).toBe(helper.allBlogs.length-1)
+    expect(blogsLeft.length).toBe(helper.allBlogs.length - 1)
     expect(blogsLeft).not.toContainEqual(toBeDeleted)
   })
 
   test('nothing is removed when id is invalid', async () => {
-    await api
-      .delete('/api/blogs/5a422aa71b54a676234d17f7')
+    await api.delete('/api/blogs/5a422aa71b54a676234d17f7')
 
     const blogsLeft = await helper.blogsInDb()
     expect(blogsLeft.length).toBe(helper.allBlogs.length)
@@ -126,7 +122,57 @@ describe('DELETE is functioning', () => {
 })
 
 describe('PUT is functioning', () => {
+  test('amount of likes is updated with valid request', async () => {
+    const blogToBeUpdated = await helper.allBlogs[0]
+    const updateData = {
+      likes: blogToBeUpdated.likes + 1
+    }
 
+    await api.put(`/api/blogs/${blogToBeUpdated._id}`).send(updateData)
+    const updatedBlog = await Blog.findById(blogToBeUpdated._id)
+    expect(updatedBlog.likes).toBe(blogToBeUpdated.likes + 1)
+  })
+
+  test('only the amount of likes is updated despite other data', async () => {
+    const blogToBeUpdated = await helper.allBlogs[0]
+    const updateData = {
+      likes: blogToBeUpdated.likes + 1,
+      author: 'asd',
+      title: 'lol',
+      url: 'localhost',
+      malicious: 'this is bad'
+    }
+
+    await api.put(`/api/blogs/${blogToBeUpdated._id}`).send(updateData)
+    const updatedBlog = await Blog.findById(blogToBeUpdated._id)
+    expect(updatedBlog.likes).toBe(blogToBeUpdated.likes + 1)
+    expect(updatedBlog.author).toEqual(blogToBeUpdated.author)
+    expect(updatedBlog.title).toEqual(blogToBeUpdated.title)
+    expect(updatedBlog.url).toEqual(blogToBeUpdated.url)
+    expect(typeof updatedBlog.malicious).toEqual('undefined')
+  })
+  test('if no new likes are given, respond with bad request', async () => {
+    const blogToBeUpdated = await helper.allBlogs[0]
+    const updateData = {
+      author: 'asd',
+      title: 'lol',
+      url: 'localhost',
+      malicious: 'this is bad'
+    }
+
+    await api
+      .put(`/api/blogs/${blogToBeUpdated._id}`)
+      .send(updateData)
+      .expect(400)
+
+    await api.put(`/api/blogs/${blogToBeUpdated._id}`).send(updateData)
+    const updatedBlog = await Blog.findById(blogToBeUpdated._id)
+    expect(updatedBlog.likes).toBe(blogToBeUpdated.likes)
+    expect(updatedBlog.author).toEqual(blogToBeUpdated.author)
+    expect(updatedBlog.title).toEqual(blogToBeUpdated.title)
+    expect(updatedBlog.url).toEqual(blogToBeUpdated.url)
+    expect(typeof updatedBlog.malicious).toEqual('undefined')
+  })
 })
 
 afterAll(() => {
