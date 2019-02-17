@@ -1,19 +1,32 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({})
   response.json(blogs.map(blog => blog.toJSON()))
 })
 
-blogsRouter.post('/', async (request, response) => {
-  const blog = new Blog(request.body)
-  if (typeof blog.title === 'undefined' || typeof blog.url === 'undefined') {
+blogsRouter.post('/', async (request, response, next) => {
+  const body = request.body
+  const user = await User.findById(body.userId)
+
+  if (typeof body.title === 'undefined' || typeof body.url === 'undefined') {
     response.status(400).send({ error: 'Title and URL must be defined' })
   } else {
-    if (typeof blog.likes === 'undefined') blog.likes = 0
-    const result = await blog.save()
-    response.status(201).json(result)
+    const blog = new Blog({
+      author: body.author,
+      title: body.title,
+      url: body.url,
+      user: user._id,
+      likes: typeof body.likes === 'undefined' ? 0 : body.likes
+    })
+    try {
+      const result = await blog.save()
+      response.status(201).json(result)
+    } catch (error) {
+      next(error)
+    }
   }
 })
 

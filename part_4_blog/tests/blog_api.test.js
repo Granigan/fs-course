@@ -3,14 +3,20 @@ const supertest = require('supertest')
 const app = require('../app')
 const helper = require('./test_helper')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const api = supertest(app)
 
 beforeEach(async () => {
   await Blog.remove({})
   const blogObjects = helper.allBlogs.map(blog => new Blog(blog))
-  const promiseArray = blogObjects.map(blog => blog.save())
-  await Promise.all(promiseArray)
+  const blogPromiseArray = blogObjects.map(blog => blog.save())
+  await Promise.all(blogPromiseArray)
+
+  await User.remove({})
+  const userObjects = helper.allUsers.map(user => new User(user))
+  const userPromiseArray = userObjects.map(user => user.save())
+  await Promise.all(userPromiseArray)
 })
 
 describe('DB is functioning', () => {
@@ -36,11 +42,13 @@ describe('DB is functioning', () => {
 
 describe('POSTs are validated', () => {
   test('valid blog can be added', async () => {
+    const user = await helper.allUsers[0]._id
     const newBlog = {
       title: 'POST-testing for Dummies',
       author: 'Anon',
       url: '#',
-      likes: 1
+      likes: 1,
+      userId: user
     }
     await api
       .post('/api/blogs')
@@ -57,10 +65,12 @@ describe('POSTs are validated', () => {
   })
 
   test('set likes to zero when no likes given', async () => {
+    const user = await helper.allUsers[0]._id
     const newBlog = {
       title: 'POST-testing for Dummies',
       author: 'Anon',
-      url: '#'
+      url: '#',
+      userId: user
     }
     await api
       .post('/api/blogs')
@@ -69,7 +79,6 @@ describe('POSTs are validated', () => {
       .expect('Content-Type', /application\/json/)
 
     const response = await api.get('/api/blogs')
-
     const newEntry = response.body.filter(blog => blog.author === 'Anon')[0]
 
     expect(response.body.length).toBe(helper.allBlogs.length + 1)
