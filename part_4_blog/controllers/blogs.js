@@ -9,7 +9,14 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', async (request, response, next) => {
   const body = request.body
-  const user = await User.findById(body.userId)
+  let user = {}
+  if (typeof body.userId === 'undefined') {
+    const users = await User.find({})
+    user = users.map(user => user.toJSON())[1]
+    console.log(user)
+  } else {
+    user = await User.findById(body.userId)
+  }
 
   if (typeof body.title === 'undefined' || typeof body.url === 'undefined') {
     response.status(400).send({ error: 'Title and URL must be defined' })
