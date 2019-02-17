@@ -1,6 +1,15 @@
+const jwt = require('jsonwebtoken')
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
+
+const getTokenFrom = request => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7)
+  }
+  return null
+}
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
@@ -9,31 +18,33 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', async (request, response, next) => {
   const body = request.body
-  let user = {}
-  if (typeof body.userId === 'undefined') {
-    const users = await User.find({})
-    user = users.map(user => user.toJSON())[1]
-    console.log(user)
-  } else {
-    user = await User.findById(body.userId)
-  }
+  const token = getTokenFrom(request)
 
-  if (typeof body.title === 'undefined' || typeof body.url === 'undefined') {
-    response.status(400).send({ error: 'Title and URL must be defined' })
-  } else {
-    const blog = new Blog({
-      author: body.author,
-      title: body.title,
-      url: body.url,
-      user: user._id,
-      likes: typeof body.likes === 'undefined' ? 0 : body.likes
-    })
-    try {
-      const result = await blog.save()
-      response.status(201).json(result)
-    } catch (error) {
-      next(error)
+  try {
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+    if (!token || !decodedToken.id) {
+      return response.status(401).json({ error: 'token missing or invalid' })
     }
+
+    const user = await User.findById(decodedToken.id)
+
+    if (typeof body.title === 'undefined' || typeof body.url === 'undefined') {
+      response.status(400).send({ error: 'Title and URL must be defined' })
+    } else {
+      const blog = new Blog({
+        author: body.author,
+        title: body.title,
+        url: body.url,
+        user: user._id,
+        likes: typeof body.likes === 'undefined' ? 0 : body.likes
+      })
+      const result = await blog.save()
+      user.blogs = user.blogs.concat(result._id)
+      await user.save()
+      response.status(201).json(result)
+    }
+  } catch (error) {
+    next(error)
   }
 })
 
