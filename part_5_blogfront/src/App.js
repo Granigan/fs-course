@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import BlogList from './components/BlogList'
+import Notice from './components/Notice'
+import Header from './components/Header'
+import Button from './components/Button'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './index.css'
@@ -62,19 +65,6 @@ const App = () => {
       setUser(user)
     }
   }, [])
-
-  const Notice = ({ message, type }) => {
-    if (message === null) {
-      return null
-    }
-    return <div className={type}>{message}</div>
-  }
-
-  const Header = ({ title }) => <h2>{title}</h2>
-
-  const Button = ({ handleClick, name }) => (
-    <button onClick={handleClick}>{name}</button>
-  )
 
   if (user === null) {
     return (
