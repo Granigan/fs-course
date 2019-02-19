@@ -1,9 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import BlogForm from './components/BlogForm'
-import BlogList from './components/BlogList'
-import Notice from './components/Notice'
-import Header from './components/Header'
-import Button from './components/Button'
+import { useState, useEffect } from 'react'
+import BlogScreen from './components/BlogScreen'
 import LoginScreen from './components/LoginScreen'
 import blogService from './services/blogs'
 import './index.css'
@@ -45,23 +41,17 @@ const App = () => {
     }
   }, [])
 
-  const BlogScreen = () => (
-    <div>
-      <Notice message={errorMessage} type="error" />
-      <Notice message={successMessage} type="success" />
-      <p>
-        Logged in as {user.name}
-        <Button handleClick={handleLogout} name="Log out" />
-      </p>
-      <BlogForm setBlogs={setBlogs} addNotice={addNotice} blogs={blogs} />
-      <Header title="Blogs" />
-      <BlogList blogs={blogs} />
-    </div>
-  )
-
   return user === null
-    ? LoginScreen(errorMessage, successMessage, setUser, addNotice)
-    : BlogScreen()
+    ? LoginScreen(errorMessage, setUser, addNotice)
+    : BlogScreen(
+        errorMessage,
+        successMessage,
+        user,
+        handleLogout,
+        setBlogs,
+        addNotice,
+        blogs
+      )
 }
 
 export default App
