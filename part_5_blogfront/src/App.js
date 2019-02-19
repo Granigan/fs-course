@@ -18,6 +18,7 @@ const App = () => {
     event.preventDefault()
     window.localStorage.removeItem('loggedBlogAppUser')
     setUser(null)
+    blogService.setToken('')
   }
 
   const addNotice = (type, message) => {
@@ -48,9 +49,10 @@ const App = () => {
     <div>
       <Notice message={errorMessage} type="error" />
       <Notice message={successMessage} type="success" />
-      <p>Logged in as {user.name}</p>
-      <Button handleClick={handleLogout} name="Log out" />
-      <Header title="Add a New Blog" />
+      <p>
+        Logged in as {user.name}
+        <Button handleClick={handleLogout} name="Log out" />
+      </p>
       <BlogForm setBlogs={setBlogs} addNotice={addNotice} blogs={blogs} />
       <Header title="Blogs" />
       <BlogList blogs={blogs} />
