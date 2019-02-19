@@ -20,6 +20,8 @@
 
 .eslintrc.js
 .eslintrc.json
+.prettierrc
+.vscode/
 
 npm-debug.log*
 yarn-debug.log*
