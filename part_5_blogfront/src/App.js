@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import './index.css'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -11,7 +12,8 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [title, setTitle] = useState('')
   const [url, setUrl] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null)
 
   const handleLogin = async event => {
     event.preventDefault()
@@ -21,15 +23,14 @@ const App = () => {
         password
       })
 
-      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
+      if (user === null)
+        window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
       setUser(user)
       setUsername('')
       setPassword('')
+      addNotice('success', `Login successful!`)
     } catch (exception) {
-      setErrorMessage('Invalid username or password.')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      addNotice('error', 'Invalid username or password.')
     }
   }
 
@@ -50,7 +51,27 @@ const App = () => {
         authorization: `bearer ${user.token}`
       }
     })
-    setBlogs(blogs.concat(response))
+    try {
+      setBlogs(blogs.concat(response))
+      addNotice(
+        'success',
+        `${response.title} by ${response.author} has been added!`
+      )
+    } catch (error) {
+      addNotice('error', error.response.data.error)
+    }
+  }
+
+  const addNotice = (type, message, async) => {
+    if (type === 'success') {
+      setSuccessMessage(message)
+    } else {
+      setErrorMessage(message)
+    }
+    setTimeout(() => {
+      setSuccessMessage(null)
+      setErrorMessage(null)
+    }, 5000)
   }
 
   useEffect(() => {
@@ -65,9 +86,18 @@ const App = () => {
     }
   }, [])
 
+  const Notice = ({ message, type }) => {
+    if (message === null) {
+      return null
+    }
+    return <div className={type}>{message}</div>
+  }
+
   if (user === null) {
     return (
       <div>
+        <Notice message={errorMessage} type="error" />
+        <Notice message={successMessage} type="success" />
         <h2>Please log in</h2>
         <form onSubmit={handleLogin}>
           <div>
@@ -95,6 +125,8 @@ const App = () => {
   }
   return (
     <div>
+      <Notice message={errorMessage} type="error" />
+      <Notice message={successMessage} type="success" />
       <p>Logged in as {user.name}</p>
       <button onClick={handleLogout}>Log out</button>
       <h2>Add a New Blog</h2>
