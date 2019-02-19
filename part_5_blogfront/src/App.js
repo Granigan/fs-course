@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import Blog from './components/Blog'
+import LoginForm from './components/LoginForm'
+import BlogForm from './components/BlogForm'
+import BlogList from './components/BlogList'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './index.css'
@@ -9,9 +11,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [author, setAuthor] = useState('')
-  const [title, setTitle] = useState('')
-  const [url, setUrl] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
 
@@ -39,7 +38,7 @@ const App = () => {
     setUser(null)
   }
 
-  const addBlog = async event => {
+  const addBlog = async ({ event, title, author, url }) => {
     event.preventDefault()
     const response = await blogService.create({
       newObject: {
@@ -93,33 +92,25 @@ const App = () => {
     return <div className={type}>{message}</div>
   }
 
+  const Header = ({ title }) => <h2>{title}</h2>
+
+  const Button = ({ handleClick, name }) => (
+    <button onClick={handleClick}>{name}</button>
+  )
+
   if (user === null) {
     return (
       <div>
+        <Header title="Please log in." />
         <Notice message={errorMessage} type="error" />
         <Notice message={successMessage} type="success" />
-        <h2>Please log in</h2>
-        <form onSubmit={handleLogin}>
-          <div>
-            Username:
-            <input
-              type="text"
-              value={username}
-              name="username"
-              onChange={({ target }) => setUsername(target.value)}
-            />
-          </div>
-          <div>
-            Password:
-            <input
-              type="password"
-              value={password}
-              name="password"
-              onChange={({ target }) => setPassword(target.value)}
-            />
-          </div>
-          <button type="submit">Log in</button>
-        </form>
+        <LoginForm
+          handleSubmit={handleLogin}
+          username={username}
+          password={password}
+          setUsername={setUsername}
+          setPassword={setPassword}
+        />
       </div>
     )
   }
@@ -128,43 +119,11 @@ const App = () => {
       <Notice message={errorMessage} type="error" />
       <Notice message={successMessage} type="success" />
       <p>Logged in as {user.name}</p>
-      <button onClick={handleLogout}>Log out</button>
-      <h2>Add a New Blog</h2>
-      <form onSubmit={addBlog}>
-        <div>
-          Author:
-          <input
-            type="text"
-            value={author}
-            name="author"
-            onChange={({ target }) => setAuthor(target.value)}
-          />
-        </div>
-        <div>
-          Title:
-          <input
-            type="text"
-            value={title}
-            name="title"
-            onChange={({ target }) => setTitle(target.value)}
-          />
-        </div>
-        <div>
-          URL:
-          <input
-            type="text"
-            value={url}
-            name="url"
-            onChange={({ target }) => setUrl(target.value)}
-          />
-        </div>
-        <button type="submit">Add</button>
-      </form>
-
-      <h2>Blogs</h2>
-      {blogs.map(blog => (
-        <Blog key={blog.id} blog={blog} />
-      ))}
+      <Button handleClick={handleLogout} name="Log out" />
+      <Header title="Add a New Blog" />
+      <BlogForm handleSubmit={addBlog} />
+      <Header title="Blogs" />
+      <BlogList blogs={blogs} />
     </div>
   )
 }
