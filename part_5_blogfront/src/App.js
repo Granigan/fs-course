@@ -27,6 +27,7 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+      blogService.setToken(user.token)
       addNotice('success', `Login successful!`)
     } catch (exception) {
       addNotice('error', 'Invalid username or password.')
@@ -38,30 +39,7 @@ const App = () => {
     setUser(null)
   }
 
-  const addBlog = async ({ event, title, author, url }) => {
-    event.preventDefault()
-    const response = await blogService.create({
-      newObject: {
-        title: title,
-        author: author,
-        url: url
-      },
-      headers: {
-        authorization: `bearer ${user.token}`
-      }
-    })
-    try {
-      setBlogs(blogs.concat(response))
-      addNotice(
-        'success',
-        `${response.title} by ${response.author} has been added!`
-      )
-    } catch (error) {
-      addNotice('error', error.response.data.error)
-    }
-  }
-
-  const addNotice = (type, message, async) => {
+  const addNotice = (type, message) => {
     if (type === 'success') {
       setSuccessMessage(message)
     } else {
@@ -121,7 +99,7 @@ const App = () => {
       <p>Logged in as {user.name}</p>
       <Button handleClick={handleLogout} name="Log out" />
       <Header title="Add a New Blog" />
-      <BlogForm handleSubmit={addBlog} />
+      <BlogForm setBlogs={setBlogs} addNotice={addNotice} blogs={blogs} />
       <Header title="Blogs" />
       <BlogList blogs={blogs} />
     </div>
