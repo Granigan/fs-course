@@ -3,7 +3,6 @@ import BlogForm from './BlogForm'
 import BlogList from './BlogList'
 import Notice from './Notice'
 import Header from './Header'
-import Button from './Button'
 import Toggleable from './Toggleable'
 
 const BlogScreen = (
@@ -20,7 +19,7 @@ const BlogScreen = (
     <Notice message={successMessage} type="success" />
     <p>
       Logged in as {user.name}
-      <Button handleClick={handleLogout} name="Log out" />
+      <button onClick={handleLogout}>Log out</button>
     </p>
     <Toggleable buttonLabel="Add a Blog">
       <BlogForm setBlogs={setBlogs} addNotice={addNotice} blogs={blogs} />
