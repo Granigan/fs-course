@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
-const Blog = ({ blog }) => {
+import blogService from '../services/blogs'
+
+const Blog = ({ addNotice, blog }) => {
   const [expanded, setExpanded] = useState(false)
 
   const showWhenExpanded = { display: expanded ? '' : 'none' }
@@ -15,6 +17,26 @@ const Blog = ({ blog }) => {
     marginBottom: 5
   }
 
+  const addLike = async event => {
+    event.preventDefault()
+    try {
+      const response = await blogService.update({
+        id: blog.id,
+        newDetails: {
+          user: blog.user.id,
+          title: blog.title,
+          author: blog.author,
+          url: blog.url,
+          likes: blog.likes + 1
+        }
+      })
+      blog.likes = blog.likes + 1
+      addNotice('success', `You liked ${response.title}!`)
+    } catch (error) {
+      addNotice('error', error.response.data.error)
+    }
+  }
+
   return (
     <div style={blogStyle}>
       <div style={hideWhenExpanded} onClick={toggleExpand}>
@@ -25,7 +47,7 @@ const Blog = ({ blog }) => {
           {blog.title} by {blog.author} <br />
         </div>
         {blog.url} <br />
-        {blog.likes} likes <button>Like</button>
+        {blog.likes} likes <button onClick={addLike}>Like</button>
         <br />
         Added by {blog.user.name}
       </div>
