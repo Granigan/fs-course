@@ -28,7 +28,7 @@ const Blog = ({ addNotice, blog, blogs, setBlogs }) => {
           title: blog.title,
           author: blog.author,
           url: blog.url,
-          likes: blog.likes + 1
+          likes: blog.likes
         }
       })
       addNotice('success', `You liked ${response.title}!`)
@@ -39,12 +39,18 @@ const Blog = ({ addNotice, blog, blogs, setBlogs }) => {
 
   const removeBlog = async event => {
     event.preventDefault()
-    try {
-      await blogService.remove({ id: blog.id })
-      addNotice('success', `${blog.title} was removed.`)
-      setBlogs(blogs.filter(b => b.id != blog.id))
-    } catch (error) {
-      addNotice('error', error.response.data.error)
+    if (
+      window.confirm(
+        `Are you sure you want to remove ${blog.title} by ${blog.author}?`
+      )
+    ) {
+      try {
+        await blogService.remove({ id: blog.id })
+        addNotice('success', `${blog.title} was removed.`)
+        setBlogs(blogs.filter(b => b.id !== blog.id))
+      } catch (error) {
+        addNotice('error', error.response.data.error)
+      }
     }
   }
 
