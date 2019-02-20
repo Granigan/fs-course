@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ addNotice, blog }) => {
+const Blog = ({ addNotice, blog, blogs, setBlogs }) => {
   const [expanded, setExpanded] = useState(false)
 
   const showWhenExpanded = { display: expanded ? '' : 'none' }
@@ -20,6 +20,7 @@ const Blog = ({ addNotice, blog }) => {
   const addLike = async event => {
     event.preventDefault()
     try {
+      blog.likes = blog.likes + 1
       const response = await blogService.update({
         id: blog.id,
         newDetails: {
@@ -30,8 +31,18 @@ const Blog = ({ addNotice, blog }) => {
           likes: blog.likes + 1
         }
       })
-      blog.likes = blog.likes + 1
       addNotice('success', `You liked ${response.title}!`)
+    } catch (error) {
+      addNotice('error', error.response.data.error)
+    }
+  }
+
+  const removeBlog = async event => {
+    event.preventDefault()
+    try {
+      await blogService.remove({ id: blog.id })
+      addNotice('success', `${blog.title} was removed.`)
+      setBlogs(blogs.filter(b => b.id != blog.id))
     } catch (error) {
       addNotice('error', error.response.data.error)
     }
@@ -49,7 +60,7 @@ const Blog = ({ addNotice, blog }) => {
         {blog.url} <br />
         {blog.likes} likes <button onClick={addLike}>Like</button>
         <br />
-        Added by {blog.user.name}
+        Added by {blog.user.name} <button onClick={removeBlog}>Remove</button>
       </div>
     </div>
   )

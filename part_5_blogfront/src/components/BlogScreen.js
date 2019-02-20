@@ -25,7 +25,7 @@ const BlogScreen = (
     <Toggleable buttonLabel="Add a Blog">
       <BlogForm setBlogs={setBlogs} addNotice={addNotice} blogs={blogs} />
     </Toggleable>
-    <BlogList blogs={blogs} addNotice={addNotice} />
+    <BlogList blogs={blogs} addNotice={addNotice} setBlogs={setBlogs} />
   </div>
 )
 
