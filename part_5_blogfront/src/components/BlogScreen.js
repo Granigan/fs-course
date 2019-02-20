@@ -21,10 +21,10 @@ const BlogScreen = (
       Logged in as {user.name}
       <button onClick={handleLogout}>Log out</button>
     </p>
+    <Header title="Blogs" />
     <Toggleable buttonLabel="Add a Blog">
       <BlogForm setBlogs={setBlogs} addNotice={addNotice} blogs={blogs} />
     </Toggleable>
-    <Header title="Blogs" />
     <BlogList blogs={blogs} />
   </div>
 )
