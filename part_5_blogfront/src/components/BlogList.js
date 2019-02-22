@@ -1,7 +1,7 @@
 import React from 'react'
 import Blog from './Blog'
 
-const BlogList = ({ addNotice, blogs, setBlogs }) =>
+const BlogList = ({ addNotice, blogs, setBlogs, user }) =>
   blogs
     .sort((a, b) => b.likes - a.likes)
     .map(blog => (
@@ -11,6 +11,7 @@ const BlogList = ({ addNotice, blogs, setBlogs }) =>
         addNotice={addNotice}
         blogs={blogs}
         setBlogs={setBlogs}
+        user={user}
       />
     ))
 
