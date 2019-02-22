@@ -44,14 +44,14 @@ const App = () => {
   return user === null
     ? LoginScreen(errorMessage, setUser, addNotice)
     : BlogScreen(
-        errorMessage,
-        successMessage,
-        user,
-        handleLogout,
-        setBlogs,
-        addNotice,
-        blogs
-      )
+      errorMessage,
+      successMessage,
+      user,
+      handleLogout,
+      setBlogs,
+      addNotice,
+      blogs
+    )
 }
 
 export default App
