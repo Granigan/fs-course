@@ -40,8 +40,6 @@ const remove = async ({ id }) => {
     url: `${baseUrl}/${id}`,
     headers: authHeader
   })
-  console.log(response)
-  console.log(response.data)
   return response.data
 }
 

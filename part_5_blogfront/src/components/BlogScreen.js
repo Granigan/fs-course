@@ -4,6 +4,7 @@ import BlogList from './BlogList'
 import Notice from './Notice'
 import Header from './Header'
 import Toggleable from './Toggleable'
+import PropTypes from 'prop-types'
 
 const BlogScreen = (
   errorMessage,
@@ -33,5 +34,15 @@ const BlogScreen = (
     />
   </div>
 )
+
+BlogScreen.propTypes = {
+  errorMessage: PropTypes.func.isRequired,
+  successMessage: PropTypes.func.isRequired,
+  user: PropTypes.func.isRequired,
+  handleLogout: PropTypes.func.isRequired,
+  setBlogs: PropTypes.func.isRequired,
+  addNotice: PropTypes.func.isRequired,
+  blogs: PropTypes.func.isRequired
+}
 
 export default BlogScreen
