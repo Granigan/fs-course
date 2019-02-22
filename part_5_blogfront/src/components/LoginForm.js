@@ -17,8 +17,6 @@ const LoginForm = ({ addNotice, setUser }) => {
       if (user === null)
         window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
       setUser(user)
-      setUsername('')
-      setPassword('')
       blogService.setToken(user.token)
       addNotice('success', `Login successful!`)
     } catch (exception) {
