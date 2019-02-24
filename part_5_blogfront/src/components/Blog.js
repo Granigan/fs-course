@@ -59,11 +59,14 @@ const Blog = ({ addNotice, blog, blogs, setBlogs, user }) => {
 
   return (
     <div style={blogStyle}>
-      <div style={hideWhenExpanded} onClick={toggleExpand}>
+      <div
+        className="briefDetails"
+        style={hideWhenExpanded}
+        onClick={toggleExpand}>
         {blog.title} by {blog.author}
       </div>
-      <div style={showWhenExpanded}>
-        <div onClick={toggleExpand}>
+      <div className="fullDetails" style={showWhenExpanded}>
+        <div className="toggler" onClick={toggleExpand}>
           {blog.title} by {blog.author} <br />
         </div>
         {blog.url} <br />
