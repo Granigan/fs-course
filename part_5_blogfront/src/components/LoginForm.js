@@ -12,8 +12,8 @@ const LoginForm = ({ addNotice, setUser }) => {
     event.preventDefault()
     try {
       const user = await loginService.login({
-        username: username.value,
-        password: password.value
+        username: username.inputProps.value,
+        password: password.inputProps.value
       })
 
       if (user === null)
@@ -22,6 +22,7 @@ const LoginForm = ({ addNotice, setUser }) => {
       blogService.setToken(user.token)
       addNotice('success', 'Login successful!')
     } catch (exception) {
+      password.reset()
       addNotice('error', 'Invalid username or password.')
     }
   }
@@ -30,11 +31,11 @@ const LoginForm = ({ addNotice, setUser }) => {
     <form onSubmit={handleLogin}>
       <div>
         Username:
-        <input {...username} />
+        <input {...username.inputProps} />
       </div>
       <div>
         Password:
-        <input {...password} />
+        <input {...password.inputProps} />
       </div>
       <button type="submit">Log in</button>
     </form>

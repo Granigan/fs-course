@@ -1,22 +1,28 @@
-import React, { useState } from 'react'
+import React from 'react'
 import blogService from '../services/blogs'
+import { useField } from '../hooks'
 
 const BlogForm = ({ setBlogs, addNotice, blogs }) => {
-  const [author, setAuthor] = useState('')
-  const [title, setTitle] = useState('')
-  const [url, setUrl] = useState('')
+  const author = useField('text')
+  const title = useField('text')
+  const url = useField('text')
 
   const addBlog = async event => {
     event.preventDefault()
+
     try {
       const response = await blogService.create({
         newObject: {
-          title: title,
-          author: author,
-          url: url
+          title: title.inputProps.value,
+          author: author.inputProps.value,
+          url: url.inputProps.value
         }
       })
-      setBlogs(blogs.concat(response))
+      const allBlogs = await blogService.getAll()
+      setBlogs(allBlogs)
+      title.reset()
+      author.reset()
+      url.reset()
       addNotice(
         'success',
         `${response.title} by ${response.author} has been added!`
@@ -31,30 +37,15 @@ const BlogForm = ({ setBlogs, addNotice, blogs }) => {
       <form onSubmit={addBlog}>
         <div>
           Author:
-          <input
-            type="text"
-            value={author}
-            name="author"
-            onChange={({ target }) => setAuthor(target.value)}
-          />
+          <input {...author.inputProps} />
         </div>
         <div>
           Title:
-          <input
-            type="text"
-            value={title}
-            name="title"
-            onChange={({ target }) => setTitle(target.value)}
-          />
+          <input {...title.inputProps} />
         </div>
         <div>
           URL:
-          <input
-            type="text"
-            value={url}
-            name="url"
-            onChange={({ target }) => setUrl(target.value)}
-          />
+          <input {...url.inputProps} />
         </div>
         <button type="submit">Add</button>
       </form>
