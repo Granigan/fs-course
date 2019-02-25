@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitForElement } from 'react-testing-library'
+import { act, render, waitForElement } from 'react-testing-library'
 import App from './App'
 jest.mock('./services/blogs')
 
@@ -11,5 +11,21 @@ describe('App ', () => {
     await waitForElement(() => component.getByText('Please log in.'))
 
     expect(component.container).not.toHaveTextContent('React patterns')
+  })
+
+  test('when logged in, blogs are rendered', async () => {
+    const user = {
+      username: 'owner',
+      name: 'tru owner',
+      token: '5c696987f11790573e0e4b1b'
+    }
+
+    localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
+    const component = render(<App />)
+    component.rerender(<App />)
+
+    await waitForElement(() => component.getByText('Logged in as tru owner'))
+
+    expect(component.container).toHaveTextContent('React patterns')
   })
 })
