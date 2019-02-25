@@ -1,0 +1,46 @@
+{
+  "notes": [
+    {
+      "content": "custom-hookit aivan mahtavia",
+      "id": 1
+    },
+    {
+      "content": "paras feature ikinä <3",
+      "id": 2
+    },
+    {
+      "content": "asd",
+      "id": 3
+    },
+    {
+      "content": "jippii",
+      "id": 4
+    },
+    {
+      "content": "josko nyt",
+      "id": 5
+    }
+  ],
+  "persons": [
+    {
+      "name": "mluukkai",
+      "number": "040-5483923",
+      "id": 1
+    },
+    {
+      "name": "asdsda",
+      "number": "12",
+      "id": 2
+    },
+    {
+      "name": "yksykskaks",
+      "number": "112",
+      "id": 3
+    },
+    {
+      "name": "fobba",
+      "number": "112",
+      "id": 4
+    }
+  ]
+}
