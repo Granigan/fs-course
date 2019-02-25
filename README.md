@@ -3,8 +3,8 @@ Spring 2019 at Helsinki University
 
 * [Exercises for Part 5, task 21](/part_5_custom_hooks/src/)
 * [Exercises for Part 5, tasks 1-20](/part_5_blogfront/src/)
-* [Exercises for Part 4, tasks 1-21](/part_4_blog/src)
-* [Exercises for Part 3, tasks 1-22](https://github.com/Granigan/fs-part3/src) **Different repository!**
+* [Exercises for Part 4, tasks 1-21](/part_4_blog/)
+* [Exercises for Part 3, tasks 1-22](https://github.com/Granigan/fs-part3/) **Different repository!**
 * [Exercises for Part 2, tasks 1-5](/part_2_halfstack/src/)
 * [Exercises for Part 2, tasks 6-11, 15-20](/part_2_puhelinluettelo/src/)
 * [Exercises for Part 2, tasks 12-14 ](/part_2_maat/src/)
