@@ -1,18 +1,19 @@
-import React, { useState } from 'react'
+import React from 'react'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
+import { useField } from '../hooks'
 
 const LoginForm = ({ addNotice, setUser }) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const username = useField('text')
+  const password = useField('password')
 
   const handleLogin = async event => {
     event.preventDefault()
     try {
       const user = await loginService.login({
-        username,
-        password
+        username: username.value,
+        password: password.value
       })
 
       if (user === null)
@@ -29,21 +30,11 @@ const LoginForm = ({ addNotice, setUser }) => {
     <form onSubmit={handleLogin}>
       <div>
         Username:
-        <input
-          type="text"
-          value={username}
-          name="username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
+        <input {...username} />
       </div>
       <div>
         Password:
-        <input
-          type="password"
-          value={password}
-          name="password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
+        <input {...password} />
       </div>
       <button type="submit">Log in</button>
     </form>
