@@ -40,4 +40,22 @@ const reducer = (state = initialState, action) => {
   }
 }
 
+export const createContent = content => {
+  return { 
+    type: 'ADDNEW', 
+    data: { 
+      content: content 
+    }
+  }
+}
+
+export const voteContent = id => {
+  return { 
+    type: 'VOTE', 
+    data: { 
+      id: id 
+    }  
+  }
+}
+
 export default reducer
