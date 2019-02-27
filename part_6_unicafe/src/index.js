@@ -15,12 +15,12 @@ const App = () => {
   return (
     <div>
       <button onClick={good}>hyvä</button> 
-      <button>neutraali</button> 
-      <button>huono</button>
-      <button>nollaa tilastot</button>
+      <button onClick={() => store.dispatch({ type: 'OK' })}>neutraali</button> 
+      <button onClick={() => store.dispatch({ type: 'BAD' })}>huono</button>
+      <button onClick={() => store.dispatch({ type: 'ZERO' })}>nollaa tilastot</button>
       <div>hyvä {store.getState().good}</div>
-      <div>neutraali</div>
-      <div>huono</div>
+      <div>neutraali {store.getState().ok}</div>
+      <div>huono {store.getState().bad}</div>
     </div>
   )
 }
