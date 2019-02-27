@@ -29,7 +29,13 @@ const reducer = (state = initialState, action) => {
       const anecdoteToVote = state.find(a => a.id === id)
       const votedAnecdote = {...anecdoteToVote, votes: anecdoteToVote.votes + 1}
       return state.map(a => a.id === id ? votedAnecdote : a)
-    
+    case 'ADDNEW':
+      const newAnecdote = {
+        content: action.data.content,
+        id: getId(),
+        votes: 0
+      }
+      return state.concat(newAnecdote)
     default: return state
   }
 }
