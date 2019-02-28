@@ -13,7 +13,14 @@ const reducer = (state = 'init', action) => {
 }
 
 export const setNotification = (content, milliseconds) => {  
-  return (dispatch) => {
+  return {
+    type: 'NEWNOTICE',
+    data: {
+      content: content
+    }
+  }
+
+  /*  return (dispatch) => {
     dispatch({
       type: 'NEWNOTICE',
       data: {
@@ -23,7 +30,7 @@ export const setNotification = (content, milliseconds) => {
     setTimeout((dispatch) => {
       dispatch({type: 'CLEARNOTICE'})
     }, milliseconds)
-  }
+  }*/
 }
 
 export const clearNotification = () => {
