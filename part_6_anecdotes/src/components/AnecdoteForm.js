@@ -7,16 +7,16 @@ const AnecdoteForm = props => {
   const addAnecdote = event => {
     event.preventDefault()
     props.createContent(event.target.anecdote.value)
-    event.target.anecdote.value = ''
     props.setNotification(`Anecdote '${event.target.anecdote.value}' added.`)
+    event.target.anecdote.value = ''
   }
   
   return (
     <div>
-      <h2>create new</h2>
+      <h2>Add new</h2>
       <form onSubmit={addAnecdote}>
         <div><input name='anecdote' /></div>
-        <button type='submit'>create</button>
+        <button type='submit'>Add</button>
       </form> 
     </div>
   )}
