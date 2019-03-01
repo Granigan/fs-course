@@ -1,7 +1,4 @@
 const reducer = (state = 'init', action) => {
-  console.log('state now: ', state)
-  console.log('action ', action)
-
   switch (action.type) {
     case 'NEWNOTICE':
       return action.data.content
