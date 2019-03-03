@@ -1,7 +1,7 @@
-const reducer = (state = 'init', action) => {
+const reducer = (state = null, action) => {
   switch (action.type) {
     case 'NEWNOTICE':
-      return action.data.content
+      return action.data
     case 'CLEARNOTICE':
       return null
     default:
@@ -9,25 +9,18 @@ const reducer = (state = 'init', action) => {
   }
 }
 
-export const setNotification = (content, milliseconds) => {  
-  return {
-    type: 'NEWNOTICE',
-    data: {
-      content: content
-    }
-  }
-
-  /*  return (dispatch) => {
+export const setNotification = (content, seconds) => {  
+  return dispatch => {
     dispatch({
       type: 'NEWNOTICE',
-      data: {
-        content: content
-      }
-    })
-    setTimeout((dispatch) => {
-      dispatch({type: 'CLEARNOTICE'})
-    }, milliseconds)
-  }*/
+      data: content
+    }) 
+    setTimeout(() => {
+      return dispatch({
+        type: 'CLEARNOTICE'
+      })
+    }, seconds*1000)
+  }
 }
 
 export const clearNotification = () => {
