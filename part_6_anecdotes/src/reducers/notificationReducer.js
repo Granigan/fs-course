@@ -1,4 +1,4 @@
-const reducer = (state = 'init', action) => {
+const reducer = (state = null, action) => {
   console.log('state now: ', state)
   console.log('action ', action)
 
@@ -12,17 +12,12 @@ const reducer = (state = 'init', action) => {
   }
 }
 
-export const setNotification = (content, milliseconds) => {  
-  return (dispatch) => {
-    dispatch({
+export const setNotification = (content) => {  
+    return {
       type: 'NEWNOTICE',
       data: {
         content: content
       }
-    })
-    setTimeout((dispatch) => {
-      dispatch({type: 'CLEARNOTICE'})
-    }, milliseconds)
   }
 }
 
