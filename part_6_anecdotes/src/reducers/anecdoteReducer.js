@@ -8,9 +8,9 @@ const reducer = (state = [] , action) => {
       const votedAnecdote = {...anecdoteToVote, votes: anecdoteToVote.votes + 1}
       return state.map(a => a.id === id ? votedAnecdote : a).sort((a, b) => b.votes - a.votes)
     case 'ADDNEW':
-      return state.concat(action.data.anecdote)
+      return state.concat(action.data)
     case 'INIT_ANECDOTES':
-      return action.data.anecdotes
+      return action.data
     default: return state
   }
 }
@@ -20,19 +20,18 @@ export const initializeAnecdotes = () => {
     const anecdotes = await anecdoteService.getAll()
     dispatch({
       type: 'INIT_ANECDOTES',
-      data: {
-        anecdotes: anecdotes
-     }
+      data: anecdotes
     })
   }
 }
 
-export const createContent = anecdote => {
-  return { 
-    type: 'ADDNEW', 
-    data: { 
-      anecdote: anecdote
-    }
+export const createContent = content => {
+  return async dispatch => { 
+    const newAnecdote = await anecdoteService.createNew(content)
+    dispatch({
+      type: 'ADDNEW', 
+      data: newAnecdote
+    })
   }
 }
 

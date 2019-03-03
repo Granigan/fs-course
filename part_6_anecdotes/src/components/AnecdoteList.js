@@ -27,9 +27,9 @@ const AnecdoteList = props => {
   )
 }
 
-const anecdotesToShow = ({ anecdotes, filter }) => 
-  anecdotes.filter(a => a.content.includes(filter))
-
+const anecdotesToShow = ({ anecdotes, filter }) => {
+  return anecdotes.filter(a => a.content.includes(filter))
+}
 const mapStateToProps = state => ({
   anecdotesToShow: anecdotesToShow(state)
 })
