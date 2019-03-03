@@ -1,7 +1,7 @@
 ## Full Stack Course Exercise Repository
 Spring 2019 at Helsinki University
 
-This branch contains the task 6.10 that is missing from the []master branch](https://github.com/Granigan/fs-course/tree/master).
+This branch contains the task 6.10 that is missing from the [master branch](https://github.com/Granigan/fs-course/tree/master).
 
 * [Exercises for Part 6, tasks 1-10](/part_6_anecdotes/src/)
 * [Exercises for Part 5, task 21](/part_5_custom_hooks/src/)
