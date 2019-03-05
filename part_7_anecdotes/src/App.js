@@ -4,23 +4,36 @@ import {
   Route, Link, Redirect, withRouter
 } from 'react-router-dom'
 
-const Menu = ({ anecdotes, addNew }) => {
+
+const RouterMenu = () => {
   const padding = {
     paddingRight: 5
   }
   return (
     <div>
+      <Link style={padding} to="/">anecdotes</Link>
+      <Link style={padding} to="/create">create new</Link>
+      <Link style={padding} to="/about">about</Link>
+    </div>
+  )
+}
+
+const RouterSelector = ({ anecdotes, addNew }) => (
+  <div>
+    <Route exact path="/" render={() => <AnecdoteList anecdotes={anecdotes} />} />
+    <Route path="/about" render={() => <About  />} />
+    <Route path="/create" render={() => <CreateNew addNew={addNew} />} />
+  </div>
+)
+
+const RouterContent = ({ anecdotes, addNew }) => {
+  return (
+    <div>
       <Router>
-        <div>
-          <div>
-            <Link style={padding} to="/">anecdotes</Link>
-            <Link style={padding} to="/create">create new</Link>
-            <Link style={padding} to="/about">about</Link>
-          </div>
-          <Route exact path="/" render={() => <AnecdoteList anecdotes={anecdotes} />} />
-          <Route path="/about" render={() => <About  />} />
-          <Route path="/create" render={() => <CreateNew addNew={addNew} />} />
-        </div>
+        <>
+          <RouterMenu />
+          <RouterSelector anecdotes={anecdotes} addNew={addNew} />
+        </>
       </Router>
     </div>
   )
@@ -138,7 +151,7 @@ const App = () => {
   return (
     <div>
       <h1>Software anecdotes</h1>
-      <Menu anecdotes={anecdotes} addNew={addNew} />
+      <RouterContent anecdotes={anecdotes} addNew={addNew} />
       <Footer />
     </div>
   )
