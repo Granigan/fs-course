@@ -48,11 +48,27 @@ const Footer = () => (
   </div>
 )
 
-const CreateNew = (props) => {
+const Notification = ({ notification }) => {
+  const style = {
+    border: 'solid',
+    padding: 10,
+    borderWidth: 1
+  }
+  
+  if(notification === '') {
+    return null
+  }
+  return (
+    <div style={style}>
+      {notification}
+    </div>
+  )
+}
+
+let CreateNew = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
-
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -62,8 +78,11 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    props.setNotification(`Anecdote '${content}' added.`)
+    setTimeout(() => props.setNotification(''), 10000)
+    props.history.push('/')
   }
-
+  
   return (
     <div>
       <h2>create a new anecdote</h2>
@@ -84,8 +103,9 @@ const CreateNew = (props) => {
       </form>
     </div>
   )
-
 }
+
+CreateNew = withRouter(CreateNew)
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -147,7 +167,12 @@ const App = () => {
         <Anecdote anecdote={anecdoteById(match.params.id)} /> 
       } />
       <Route path="/about" render={() => <About  />} />
-      <Route path="/create" render={() => <CreateNew addNew={addNew} />} />
+      <Route path="/create" render={() => 
+        <CreateNew setNotification={
+          setNotification}
+          addNew={addNew} 
+        />} 
+      />
     </div>
   )
   
@@ -167,10 +192,11 @@ const App = () => {
   return (
     <div>
       <h1>Software anecdotes</h1>
+      <Notification notification={notification} />
       <RouterContent anecdotes={anecdotes} addNew={addNew} />
       <Footer />
     </div>
   )
 }
 
-export default App;
+export default App
