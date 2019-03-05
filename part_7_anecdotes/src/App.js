@@ -5,45 +5,23 @@ import {
 } from 'react-router-dom'
 
 
-const RouterMenu = () => {
-  const padding = {
-    paddingRight: 5
-  }
-  return (
-    <div>
-      <Link style={padding} to="/">anecdotes</Link>
-      <Link style={padding} to="/create">create new</Link>
-      <Link style={padding} to="/about">about</Link>
-    </div>
-  )
-}
 
-const RouterSelector = ({ anecdotes, addNew }) => (
+const Anecdote = ({ anecdote }) => (
   <div>
-    <Route exact path="/" render={() => <AnecdoteList anecdotes={anecdotes} />} />
-    <Route path="/about" render={() => <About  />} />
-    <Route path="/create" render={() => <CreateNew addNew={addNew} />} />
+    <h2>{anecdote.content}</h2>
+    <p>has {anecdote.votes} votes</p>
+    <p>for more info see <a href={anecdote.info}>{anecdote.info}</a></p>
   </div>
 )
-
-const RouterContent = ({ anecdotes, addNew }) => {
-  return (
-    <div>
-      <Router>
-        <>
-          <RouterMenu />
-          <RouterSelector anecdotes={anecdotes} addNew={addNew} />
-        </>
-      </Router>
-    </div>
-  )
-}
 
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+      {anecdotes.map(anecdote => 
+      <li key={anecdote.id} >
+        <Link to={`/anecdote/${anecdote.id}`}>{anecdote.content}</Link>
+      </li>)}
     </ul>
   </div>
 )
@@ -134,8 +112,9 @@ const App = () => {
     setAnecdotes(anecdotes.concat(anecdote))
   }
 
-  const anecdoteById = (id) =>
-    anecdotes.find(a => a.id === id)
+  const anecdoteById = (id) => {
+    return anecdotes.find(a => a.id === id)
+  }
 
   const vote = (id) => {
     const anecdote = anecdoteById(id)
@@ -148,6 +127,43 @@ const App = () => {
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
 
+  const RouterMenu = () => {
+    const padding = {
+      paddingRight: 5
+    }
+    return (
+      <div>
+        <Link style={padding} to="/">anecdotes</Link>
+        <Link style={padding} to="/create">create new</Link>
+        <Link style={padding} to="/about">about</Link>
+      </div>
+    )
+  }
+  
+  const RouterSelector = ({ anecdotes, addNew }) => (
+    <div>
+      <Route exact path="/" render={() => <AnecdoteList anecdotes={anecdotes} />} />
+      <Route exact path="/anecdote/:id" render={({ match }) => 
+        <Anecdote anecdote={anecdoteById(match.params.id)} /> 
+      } />
+      <Route path="/about" render={() => <About  />} />
+      <Route path="/create" render={() => <CreateNew addNew={addNew} />} />
+    </div>
+  )
+  
+  const RouterContent = ({ anecdotes, addNew }) => {
+    return (
+      <div>
+        <Router>
+          <>
+            <RouterMenu />
+            <RouterSelector anecdotes={anecdotes} addNew={addNew} />
+          </>
+        </Router>
+      </div>
+    )
+  }
+  
   return (
     <div>
       <h1>Software anecdotes</h1>
