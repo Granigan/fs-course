@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { setNotice } from '../reducers/noticeReducer'
+import { likeBlog } from '../reducers/blogReducer'
 import blogService from '../services/blogs'
 
-const Blog = ({ setNotice, blog, blogs, setBlogs, user }) => {
+const Blog = ({ likeBlog, setNotice, blog, blogs, setBlogs, user }) => {
   const [expanded, setExpanded] = useState(false)
 
   const showWhenExpanded = { display: expanded ? '' : 'none' }
@@ -22,21 +23,13 @@ const Blog = ({ setNotice, blog, blogs, setBlogs, user }) => {
     marginBottom: 5
   }
 
-  const addLike = async event => {
+  const handleLike = async event => {
     event.preventDefault()
     try {
-      blog.likes = blog.likes + 1
-      const response = await blogService.update({
-        id: blog.id,
-        newDetails: {
-          user: blog.user.id,
-          title: blog.title,
-          author: blog.author,
-          url: blog.url,
-          likes: blog.likes
-        }
-      })
-      setNotice(`You liked ${response.title}!`, 'success', 5)
+      await likeBlog(blog.id)
+      const allBlogs = await blogService.getAll()
+      setBlogs(allBlogs)
+      setNotice(`You liked ${blog.title}!`, 'success', 5)
     } catch (error) {
       setNotice(error.response.data.error, 'error', 10)
     }
@@ -72,7 +65,7 @@ const Blog = ({ setNotice, blog, blogs, setBlogs, user }) => {
           {blog.title} by {blog.author} <br />
         </div>
         {blog.url} <br />
-        {blog.likes} likes <button onClick={addLike}>Like</button>
+        {blog.likes} likes <button onClick={handleLike}>Like</button>
         <br />
         Added by {blog.user.name}
         <button style={removeButtonVisibility} onClick={removeBlog}>
@@ -88,7 +81,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
-  setNotice
+  setNotice,
+  likeBlog
 }
 
 const ConnectedBlog = connect(

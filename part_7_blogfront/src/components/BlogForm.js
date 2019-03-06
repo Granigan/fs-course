@@ -3,33 +3,33 @@ import { connect } from 'react-redux'
 import blogService from '../services/blogs'
 import { useField } from '../hooks'
 import { setNotice } from '../reducers/noticeReducer'
+import { addBlog } from '../reducers/blogReducer'
 
-const BlogForm = ({ setNotice, setBlogs, blogs }) => {
+const BlogForm = ({ addBlog, setNotice, setBlogs }) => {
   const author = useField('text')
   const title = useField('text')
   const url = useField('text')
 
-  const addBlog = async event => {
+  const handleSubmit = async event => {
     event.preventDefault()
-
     try {
-      const response = await blogService.create({
-        newObject: {
-          title: title.inputProps.value,
-          author: author.inputProps.value,
-          url: url.inputProps.value
-        }
-      })
+      await addBlog(
+        title.inputProps.value,
+        author.inputProps.value,
+        url.inputProps.value
+      )
       const allBlogs = await blogService.getAll()
       setBlogs(allBlogs)
-      title.reset()
-      author.reset()
-      url.reset()
       setNotice(
-        `${response.title} by ${response.author} has been added!`,
+        `${title.inputProps.value} by ${
+          author.inputProps.value
+        } has been added!`,
         'success',
         5
       )
+      title.reset()
+      author.reset()
+      url.reset()
     } catch (error) {
       setNotice(error.response.data.error, 'error', 10)
     }
@@ -37,7 +37,7 @@ const BlogForm = ({ setNotice, setBlogs, blogs }) => {
 
   return (
     <div>
-      <form onSubmit={addBlog}>
+      <form onSubmit={handleSubmit}>
         <div>
           Author:
           <input {...author.inputProps} />
@@ -58,5 +58,5 @@ const BlogForm = ({ setNotice, setBlogs, blogs }) => {
 
 export default connect(
   null,
-  { setNotice }
+  { setNotice, addBlog }
 )(BlogForm)

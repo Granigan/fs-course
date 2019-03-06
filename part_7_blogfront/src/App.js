@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 import BlogScreen from './components/BlogScreen'
 import LoginScreen from './components/LoginScreen'
 import blogService from './services/blogs'
+import { initBlogs } from './reducers/blogReducer'
 import './index.css'
 
 const App = props => {
@@ -16,7 +18,7 @@ const App = props => {
   }
 
   useEffect(() => {
-    blogService.getAll().then(blogs => setBlogs(blogs))
+    props.initBlogs()
   }, [])
 
   useEffect(() => {
@@ -32,4 +34,11 @@ const App = props => {
     : BlogScreen(user, handleLogout, setBlogs, blogs)
 }
 
-export default App
+const mapStateToProps = state => {
+  return { blogs: state.blog }
+}
+
+export default connect(
+  mapStateToProps,
+  { initBlogs }
+)(App)
