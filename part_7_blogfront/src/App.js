@@ -4,7 +4,7 @@ import LoginScreen from './components/LoginScreen'
 import blogService from './services/blogs'
 import './index.css'
 
-const App = () => {
+const App = props => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)

@@ -5,6 +5,7 @@ import Notice from './Notice'
 import Header from './Header'
 import Toggleable from './Toggleable'
 import PropTypes from 'prop-types'
+import ReduxNotice from './ReduxNotice'
 
 const BlogScreen = (
   errorMessage,
@@ -18,6 +19,7 @@ const BlogScreen = (
   <div>
     <Notice message={errorMessage} type="error" />
     <Notice message={successMessage} type="success" />
+    <ReduxNotice />
     <p>
       Logged in as {user.name}
       <button onClick={handleLogout}>Log out</button>

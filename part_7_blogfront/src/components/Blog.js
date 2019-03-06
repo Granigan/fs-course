@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
+import { connect } from 'react-redux'
+import { setNotice } from '../reducers/noticeReducer'
 import blogService from '../services/blogs'
 
-const Blog = ({ addNotice, blog, blogs, setBlogs, user }) => {
+const Blog = ({ setNotice, addNotice, blog, blogs, setBlogs, user }) => {
   const [expanded, setExpanded] = useState(false)
 
   const showWhenExpanded = { display: expanded ? '' : 'none' }
@@ -34,7 +36,9 @@ const Blog = ({ addNotice, blog, blogs, setBlogs, user }) => {
           likes: blog.likes
         }
       })
-      addNotice('success', `You liked ${response.title}!`)
+      //      addNotice('success', `You liked ${response.title}!`)
+      console.log('notify through redux')
+      setNotice(`You liked ${response.title}!`, 'success', 5)
     } catch (error) {
       addNotice('error', error.response.data.error)
     }
@@ -80,4 +84,18 @@ const Blog = ({ addNotice, blog, blogs, setBlogs, user }) => {
     </div>
   )
 }
-export default Blog
+
+const mapStateToProps = state => {
+  return {}
+}
+
+const mapDispatchToProps = {
+  setNotice
+}
+
+const ConnectedBlog = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Blog)
+
+export default ConnectedBlog
