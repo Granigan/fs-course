@@ -3,14 +3,12 @@ import LoginForm from './LoginForm'
 import Notice from './Notice'
 import Header from './Header'
 
-const LoginScreen = (errorMessage, setUser, addNotice) => {
-  // LoginForm row causes a "Can't perform a React state update
-  // on an unmounted component" warning
+const LoginScreen = setUser => {
   return (
     <div>
       <Header title="Please log in." />
-      <Notice message={errorMessage} type="error" />
-      <LoginForm addNotice={addNotice} setUser={setUser} />
+      <Notice />
+      <LoginForm setUser={setUser} />
     </div>
   )
 }

@@ -1,8 +1,10 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import blogService from '../services/blogs'
 import { useField } from '../hooks'
+import { setNotice } from '../reducers/noticeReducer'
 
-const BlogForm = ({ setBlogs, addNotice, blogs }) => {
+const BlogForm = ({ setNotice, setBlogs, blogs }) => {
   const author = useField('text')
   const title = useField('text')
   const url = useField('text')
@@ -23,12 +25,13 @@ const BlogForm = ({ setBlogs, addNotice, blogs }) => {
       title.reset()
       author.reset()
       url.reset()
-      addNotice(
+      setNotice(
+        `${response.title} by ${response.author} has been added!`,
         'success',
-        `${response.title} by ${response.author} has been added!`
+        5
       )
     } catch (error) {
-      addNotice('error', error.response.data.error)
+      setNotice(error.response.data.error, 'error', 10)
     }
   }
 
@@ -53,4 +56,7 @@ const BlogForm = ({ setBlogs, addNotice, blogs }) => {
   )
 }
 
-export default BlogForm
+export default connect(
+  null,
+  { setNotice }
+)(BlogForm)

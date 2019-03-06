@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { setNotice } from '../reducers/noticeReducer'
 import blogService from '../services/blogs'
 
-const Blog = ({ setNotice, addNotice, blog, blogs, setBlogs, user }) => {
+const Blog = ({ setNotice, blog, blogs, setBlogs, user }) => {
   const [expanded, setExpanded] = useState(false)
 
   const showWhenExpanded = { display: expanded ? '' : 'none' }
@@ -36,11 +36,9 @@ const Blog = ({ setNotice, addNotice, blog, blogs, setBlogs, user }) => {
           likes: blog.likes
         }
       })
-      //      addNotice('success', `You liked ${response.title}!`)
-      console.log('notify through redux')
       setNotice(`You liked ${response.title}!`, 'success', 5)
     } catch (error) {
-      addNotice('error', error.response.data.error)
+      setNotice(error.response.data.error, 'error', 10)
     }
   }
 
@@ -53,10 +51,10 @@ const Blog = ({ setNotice, addNotice, blog, blogs, setBlogs, user }) => {
     ) {
       try {
         await blogService.remove({ id: blog.id })
-        addNotice('success', `${blog.title} was removed.`)
+        setNotice(`${blog.title} was removed.`, 'success', 5)
         setBlogs(blogs.filter(b => b.id !== blog.id))
       } catch (error) {
-        addNotice('error', error.response.data.error)
+        setNotice(error.response.data.error, 'error', 10)
       }
     }
   }

@@ -1,10 +1,12 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
 import { useField } from '../hooks'
+import { setNotice } from '../reducers/noticeReducer'
 
-const LoginForm = ({ addNotice, setUser }) => {
+const LoginForm = ({ setNotice, setUser }) => {
   const username = useField('text')
   const password = useField('password')
 
@@ -20,10 +22,10 @@ const LoginForm = ({ addNotice, setUser }) => {
         window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
       setUser(user)
       blogService.setToken(user.token)
-      addNotice('success', 'Login successful!')
+      setNotice('Login successful!', 'success', 3)
     } catch (exception) {
       password.reset()
-      addNotice('error', 'Invalid username or password.')
+      setNotice('Invalid username or password.', 'error', 5)
     }
   }
 
@@ -43,8 +45,12 @@ const LoginForm = ({ addNotice, setUser }) => {
 }
 
 LoginForm.propTypes = {
-  addNotice: PropTypes.func.isRequired,
   setUser: PropTypes.func.isRequired
 }
 
-export default LoginForm
+const ConnectedLoginForm = connect(
+  null,
+  { setNotice }
+)(LoginForm)
+
+export default ConnectedLoginForm

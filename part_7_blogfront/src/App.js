@@ -7,26 +7,12 @@ import './index.css'
 const App = props => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [successMessage, setSuccessMessage] = useState(null)
 
   const handleLogout = event => {
     event.preventDefault()
     window.localStorage.removeItem('loggedBlogAppUser')
     setUser(null)
     blogService.setToken('')
-  }
-
-  const addNotice = (type, message) => {
-    if (type === 'success') {
-      setSuccessMessage(message)
-    } else {
-      setErrorMessage(message)
-    }
-    setTimeout(() => {
-      setSuccessMessage(null)
-      setErrorMessage(null)
-    }, 5000)
   }
 
   useEffect(() => {
@@ -42,16 +28,8 @@ const App = props => {
   }, [])
 
   return user === null
-    ? LoginScreen(errorMessage, setUser, addNotice)
-    : BlogScreen(
-      errorMessage,
-      successMessage,
-      user,
-      handleLogout,
-      setBlogs,
-      addNotice,
-      blogs
-    )
+    ? LoginScreen(setUser)
+    : BlogScreen(user, handleLogout, setBlogs, blogs)
 }
 
 export default App
