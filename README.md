@@ -1,6 +1,8 @@
 ## Full Stack Course Exercise Repository
 Spring 2019 at Helsinki University
 
+* [Exercises for Part 7, task 4](/part_7_blogfront)
+* [Exercises for Part 7, tasks 1-3](/part_7_anecdotes)
 * [Exercises for Part 6, tasks 1-21 excluding 10](/part_6_anecdotes/src/)
 * [Exercises for Part 6, 6.10](https://github.com/Granigan/fs-course/tree/thunkless_notification/part_6_anecdotes/src)
 * [Exercises for Part 5, task 21](/part_5_custom_hooks/src/)
